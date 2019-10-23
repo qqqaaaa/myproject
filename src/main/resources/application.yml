@@ -1,0 +1,70 @@
+server:
+  port: 9882
+spring:
+  profiles:
+    active: test
+  application:
+    name: mc-history
+  boot:
+    admin:
+      client:
+        url: http://${mc.host.admin-server}:9082
+kafka:
+  consumer:
+    servers: ${mc.host.kafkaserver}
+    enable-auto-commit: false
+    session-timeout: 20000
+    auto-commit-interval: 300
+    auto-offset-reset: latest
+    topic: mccloud-message
+    groupId: HistoryConsumer-${random.int}
+    concurrency: 20
+    max-poll-records: 2000
+    max-partition-fetch-bytes: 20971520
+  producer:
+    servers: ${mc.host.kafkaserver}
+    topic: mccloud-message
+    retries: 0
+    batch-size: 4096
+    linger: 1
+    buffer-memory: 40960
+influxdb:
+  client:
+    username: admin
+    password: 123456
+    url: http://${mc.host.influxdbserver}:8086
+    database: history
+eureka:
+  instance:
+    prefer-ip-address: true
+    instance-id: mc-history-${random.int}
+    leaseRenewalIntervalInSeconds: 10
+    health-check-url-path: /actuator/health
+  client:
+    serviceUrl:
+      defaultZone: http://${mc.host.eurekaserver}:7001/eureka
+    registryFetchIntervalSeconds: 5
+mybatis:
+  mapper-locations: classpath:mapper/*.xml
+  configuration:
+    map-underscore-to-camel-case: true
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  endpoint:
+    logfile:
+      enabled: true
+logging:
+  file: history.log
+  MaxFileSize: 128MB
+  level:
+    com:
+      microcyber.*: debug
+info:
+  app:
+    name: mc-history
+
+
+

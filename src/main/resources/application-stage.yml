@@ -1,0 +1,14 @@
+spring:
+  datasource:
+    url: jdbc:mysql://${mc.host.mysqlserver}:3306/mccloud?useUnicode=true&characterEncoding=utf8
+    username: microcyber
+    password: nq0H3JUc*3ehrjNr$zGH!
+    driver-class-name: com.mysql.jdbc.Driver
+
+mc:
+  host:
+    admin-server: 192.168.3.14
+    kafkaserver: 192.168.3.11:9092
+    influxdbserver: 192.168.3.11
+    eurekaserver: 192.168.3.14
+    mysqlserver: 192.168.3.11

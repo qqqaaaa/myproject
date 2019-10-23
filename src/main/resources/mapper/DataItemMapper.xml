@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.microcyber.cloud.history.mapper.DataItemDAO">
+
+    <select id="getList"
+            resultType="com.microcyber.cloud.history.model.DataItem">
+        SELECT
+        data_item_id,data_type,persist,data_item_name
+        FROM
+        mc_device_item
+    </select>
+    <insert id="batchInsert" parameterType="java.util.List">
+    insert into mc_device_item (data_item_id,data_item_name,device_id,data_type,persist,collect_interval,calculated) values
+    <foreach collection="list" item="item" index="index" separator=",">
+        (
+        #{item.data_item_id,jdbcType=BIGINT},
+        #{item.data_item_name,jdbcType=VARCHAR},
+        #{item.device_id,jdbcType=BIGINT},
+        #{item.data_type,jdbcType=BIGINT},
+        #{item.persist,jdbcType=BIGINT},
+        #{item.collect_interval,jdbcType=BIGINT},
+        #{item.calculated,jdbcType=BIGINT}
+        )
+    </foreach>
+</insert>
+    <insert id="insertDevice" parameterType="Map">
+        insert  into mc_device(device_id,device_name,gateway_id,enable) values(#{device_id},#{device_name},#{gateway_id},1)
+    </insert>
+    <delete id="deleteDevice" >
+        delete from mc_device where device_id like '1111000%'
+    </delete>
+    <delete id="deleteDeviceItem">
+        delete from mc_device_item where device_id like '1111000%'
+    </delete>
+</mapper>
